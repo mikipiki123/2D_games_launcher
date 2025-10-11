@@ -26,6 +26,6 @@ target_link_libraries(gameMenu PRIVATE
         SDL2_image::SDL2_image
         SDL2_ttf::SDL2_ttf
         SDL2_mixer::SDL2_mixer
-        /Users/miki/Documents/programiki/cpp/gameMenu/games/snake/libsnake.dylib
+        ${CMAKE_CURRENT_SOURCE_DIR}/games/snake/libsnake.dylib
 )
 
