@@ -15,3 +15,7 @@ gameMenu
 Nakime Biwa sound effect.mp3
 
 Makefile
+
+games/snake/.DS_Store
+
+games/snake/Testing/Temporary/
