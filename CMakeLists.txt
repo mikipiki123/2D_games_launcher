@@ -8,15 +8,16 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-include_directories(games/snake/include)
+include_directories(games/snake2/include)
 
 add_executable(gameMenu library.cpp
         buttonHandler.cpp
         buttonHandler.h
         CsvHandler.cpp
-        CsvHandler.h)
+        CsvHandler.h
+)
 
-link_directories(games/snake)
+link_directories(games/snake2)
 
 
 target_link_libraries(gameMenu PRIVATE
