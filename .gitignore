@@ -1,0 +1,17 @@
+
+CMakeFiles/
+.cmake/
+
+.idea/
+
+Testing/Temporary/
+
+CMakeCache.txt
+
+cmake_install.cmake
+
+gameMenu
+
+Nakime Biwa sound effect.mp3
+
+Makefile
