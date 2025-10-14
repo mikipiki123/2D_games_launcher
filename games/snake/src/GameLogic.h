@@ -2,10 +2,12 @@
 // Created by Michael Berner on 04/10/2025.
 //
 
-#include "../include/WindowManager.h"
+
 
 #ifndef SNAKE_SNAKELOGIC_H
 #define SNAKE_SNAKELOGIC_H
+
+#include "../include/WindowManager.h"
 
 #define GAME_DIM 20 //assume square dimensions
 #define SHIFT_ON_EACH_SIDE 10

@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include "TetrisMain.h"
+
 int main() {
 
     WindowManager* windowManager = new WindowManager(1080, 720);
@@ -32,8 +34,8 @@ int main() {
     ButtonHandler* quitButton = new ButtonHandler(windowManager, {38, 28, 60, 40}, {100, 100, 100} , {60, 60, 60},{30, 30, 30});
     quitButton->buttonText = "Quit";
 
-    // ButtonHandler* tetrisButton = new ButtonHandler(windowManager, {(int)windowManager->screen_width / 2, (int)windowManager->screen_height/2 + 80, 200, 60}, {100, 100, 100} ,{170, 170, 255}, {100, 100, 255});
-    // tetrisButton->buttonText = "Tetris";
+    ButtonHandler* tetrisButton = new ButtonHandler(windowManager, {(int)windowManager->screen_width / 2, (int)windowManager->screen_height/2 + 80, 200, 60}, {100, 100, 100} ,{170, 170, 255}, {100, 100, 255});
+    tetrisButton->buttonText = "Tetris";
 
     windowManager->music = Mix_LoadMUS("sounds/Wii Music - Gaming Background Music (HD).mp3");
 
@@ -47,7 +49,7 @@ int main() {
 
 
             snakeButton->buttonStatus(&e, snakePlay); // same as below
-            // tetrisButton->buttonStatus(&e, snakePlay);
+            tetrisButton->buttonStatus(&e, tetrisPlay);
 
 
             quitButton->isHover = quitButton->isInside();
@@ -72,7 +74,7 @@ int main() {
         SDL_RenderCopy(windowManager->renderer, windowManager->backGround, nullptr, nullptr);
         snakeButton->buttonRender();
         quitButton->buttonRender();
-        // tetrisButton->buttonRender();
+        tetrisButton->buttonRender();
         SDL_RenderPresent( windowManager->renderer );
     }
 

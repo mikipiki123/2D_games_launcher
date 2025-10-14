@@ -1,25 +1,20 @@
+#include <iostream>
+#include "WindowManager.h"
+#include "gameLogic.h"
+#include "SnakeMain.h"
+#include "../include/TetrisMain.h"
 
+using namespace std;
 
-#include "GameLogic.h"
-#include "../include//WindowManager.h"
-#include "../include/SnakeMain.h"
+#define PRINT_MATRIX()\
+for (int i = 0; i < GAME_DIM_HEIGHT; ++i) { \
+    for (int j = 0; j < GAME_DIM_WIDTH; ++j)\
+        std::cout << gameLogic.savedMatrix[i][j] << ' ';\
+    std::cout << '\n';\
+}\
+std::cout << "\n\n\n" << std::endl;\
 
-
-#define RESPONSE_TO_CORNER_OR_APPLE(x) \
-    if (gameLogic.isCorner(x)) { \
-        quit = true;}\
-    if (gameLogic.isEaten(x)){ \
-        Mix_PlayChannel(-1, windowManager->soundEffect, 0); \
-        gameLogic.grow(); \
-        score++; text[1] = std::to_string(score); \
-        if (speed > 400){ \
-            speed -= 20; \
-        } \
-        gameLogic.genApple();}\
-
-
-
-UserData snakePlay(WindowManager* window, UserData* bestUser) {
+UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
 
 
     WindowManager* windowManager = NULL;
@@ -31,11 +26,11 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
             exit(1);
         }
     } else {
-        std::cout << "Snake Called!! with existed window: " << std::endl;
+        std::cout << "Tetris Called!! with existed window: " << std::endl;
         windowManager = window;
     }
 
-    if (!windowManager->loadMedia("images/grass.jpg")) {
+    if (!windowManager->loadMedia("games/tetris/images/tetrisBackground.jpg")) {
         std::cerr << "Error loading grass image" << std::endl;
         exit(1);
     }
@@ -43,100 +38,91 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
 
     GameLogic gameLogic(windowManager);
 
-
-
     //Main loop flag
     bool quit = false;
 
     //Event handler
     SDL_Event e;
 
+    int highestScore = 2;
     bool gameOver = false;
 
-    //best score text:
-    std::cout << bestUser->score.c_str() << std::endl;
-    int highestScore = std::stoi(bestUser->score.c_str());
-
-
-    int score = 0;
-
-    // bestUser->game = "Snake";
-    std::string sentence = bestUser->name + ": " + bestUser->score;
-    std::cout << sentence << std::endl;
-    std::array<std::string,4> text = {"Score:", std::to_string(score), "Best score: " , sentence};
+    std::array<std::string,4> text = {"Score:", std::to_string(gameLogic.score), "Best score: " , bestUser->name + ": " + std::to_string(highestScore)};
 
     // Record start time
     auto start = std::chrono::high_resolution_clock::now();
 
-    int speed = 800;
-
-    if (!windowManager->loadAudio("sounds/ApplePay.wav")) {
-        std::cout << "Failed to load audio." << std::endl;
-        exit(1);
-    }
-
-    //While application is running
+     //While application is running
     while( !quit ) {
         //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 ) {
             //User requests quit
-            if( e.type == SDL_QUIT )
-            {
-                quit = true;
-            }
+            // if( e.type == SDL_QUIT )
+            // {
+            //     return 0;
+            // }
 
             //User presses a key
             if( e.type == SDL_KEYDOWN ) {
                 //Select surfaces based on key press
                 switch( e.key.keysym.sym ) {
+                    case SDLK_SPACE:
+                        // start = std::chrono::high_resolution_clock::now();
+                        gameLogic.checkAndRotate();
+                        std::cout << "space!---------------" << std::endl;
+                        break;
+
                     case SDLK_UP:
-                        RESPONSE_TO_CORNER_OR_APPLE(KEY_PRESS_SURFACE_UP)
-                        gameLogic.entities[0]->move(KEY_PRESS_SURFACE_UP);
-                        gameLogic.entities[0]->lastMove = KEY_PRESS_SURFACE_UP;
-                        start = std::chrono::high_resolution_clock::now();
+                        // start = std::chrono::high_resolution_clock::now();
+                        gameLogic.checkAndRotate();
                         std::cout << "up!---------------" << std::endl;
                         break;
 
                     case SDLK_DOWN:
-                        RESPONSE_TO_CORNER_OR_APPLE(KEY_PRESS_SURFACE_DOWN)
-                        gameLogic.entities[0]->move(KEY_PRESS_SURFACE_DOWN);
-                        gameLogic.entities[0]->lastMove = KEY_PRESS_SURFACE_DOWN;
-                        start = std::chrono::high_resolution_clock::now();
+                        // start = std::chrono::high_resolution_clock::now();
                         std::cout << "down!---------------" << std::endl;
+                        gameLogic.checkAndMove(KEY_PRESS_SURFACE_DOWN);
                         break;
 
                     case SDLK_LEFT:
-                        RESPONSE_TO_CORNER_OR_APPLE(KEY_PRESS_SURFACE_LEFT)
-                        gameLogic.entities[0]->move(KEY_PRESS_SURFACE_LEFT);
-                        gameLogic.entities[0]->lastMove = KEY_PRESS_SURFACE_LEFT;
-                        start = std::chrono::high_resolution_clock::now();
+                        // start = std::chrono::high_resolution_clock::now();
                         std::cout << "left!---------------" << std::endl;
+                        gameLogic.checkAndMove(KEY_PRESS_SURFACE_LEFT);
                         break;
 
                     case SDLK_RIGHT:
-                        RESPONSE_TO_CORNER_OR_APPLE(KEY_PRESS_SURFACE_RIGHT)
-                        gameLogic.entities[0]->move(KEY_PRESS_SURFACE_RIGHT);
-                        gameLogic.entities[0]->lastMove = KEY_PRESS_SURFACE_RIGHT;
-                        start = std::chrono::high_resolution_clock::now();
+                        // start = std::chrono::high_resolution_clock::now();
                         std::cout << "right!---------------" << std::endl;
+                        gameLogic.checkAndMove(KEY_PRESS_SURFACE_RIGHT);
                         break;
                     default:
                     std::cout << "default!---------------" << std::endl;
                 }
-                gameLogic.updateMatrixAndSkeleton();
+                //render game --
+                gameLogic.updateMatrix();
+                PRINT_MATRIX()
+                if (!gameLogic.checkAndGenShape()) {
+                    quit = true;
+                }
+                //-------
             }
         }
 
         // Record end time
         auto end = std::chrono::high_resolution_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() > speed) {
-            std::cout << "TIME! 3" << std::endl;
-            // keyboardToggle = true;
-            RESPONSE_TO_CORNER_OR_APPLE(gameLogic.entities[0]->lastMove)
-            gameLogic.entities[0]->move(gameLogic.entities[0]->lastMove);
-            gameLogic.updateMatrixAndSkeleton();
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() > gameLogic.speed) {
+            std::cout << "TIME! 1" << std::endl;
+            gameLogic.checkAndMove(KEY_PRESS_SURFACE_DOWN);
+            gameLogic.updateMatrix();
+            PRINT_MATRIX()
+            if (!gameLogic.checkAndGenShape()) {
+                quit = true;
+            }
             start = std::chrono::high_resolution_clock::now();
+
+
         }
+
 
 
         // SDL_SetRenderDrawColor(windowManager->renderer, 0, 0, 0, 255);
@@ -153,18 +139,18 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
         }
 
 
-
         //draw game
         gameLogic.drawGame();
 
         //text
+        text[1] = std::to_string(gameLogic.score);
         for (int i = 0; i < text.size(); i++) {
             if (!windowManager->loadFont(text[i], i)) {
                 std::cout << "Failed to load Font." << std::endl;
                 exit(1);
             }
 
-            int tw,th;
+
             SDL_Rect textScore = {10, 5 + i * 20, 0, 0};
 
             SDL_QueryTexture(windowManager->text[i], nullptr, nullptr, &textScore.w, &textScore.h);
@@ -172,17 +158,17 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
             SDL_RenderCopy(windowManager->renderer, windowManager->text[i], nullptr, &textScore);
         }
 
+
         //Update screen
         SDL_RenderPresent( windowManager->renderer );
-
     }
 
     quit = false;
 
     Mix_PauseMusic();
 
-    if (score > highestScore) {
-        bestUser->score = std::to_string(score);
+    if (gameLogic.score > highestScore) {
+        bestUser->score = std::to_string(gameLogic.score);
 
         std::string userInput = " ";
 
@@ -265,7 +251,6 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
             exit(1);
         }
 
-        SDL_Delay(200);
 
         if (!windowManager->loadAudio("sounds/LOSE.wav")) {
             std::cerr << "Failed to load audio." << std::endl;
@@ -301,7 +286,7 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
                 SDL_RenderCopy(windowManager->renderer, windowManager->text[i], nullptr, &textRect);
             }
 
-            SDL_RenderPresent( windowManager->renderer );
+            SDL_RenderPresent( windowManager->renderer);
         }
         bestUser->score = "-1";
         bestUser->name = ".";
@@ -319,6 +304,6 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
     bestUser->score = "-1";
     bestUser->name = ".";
 
-    return *bestUser;
 
+    return *bestUser;
 }

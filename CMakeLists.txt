@@ -8,7 +8,10 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-include_directories(games/snake/include)
+include_directories(
+        games/snake/include
+        games/tetris/include
+)
 
 add_executable(gameMenu library.cpp
         buttonHandler.cpp
@@ -17,8 +20,10 @@ add_executable(gameMenu library.cpp
         CsvHandler.h
 )
 
-link_directories(games/snake)
-
+link_directories(
+        games/snake
+        games/tetris
+)
 
 target_link_libraries(gameMenu PRIVATE
         SDL2::SDL2
@@ -27,5 +32,6 @@ target_link_libraries(gameMenu PRIVATE
         SDL2_ttf::SDL2_ttf
         SDL2_mixer::SDL2_mixer
         ${CMAKE_CURRENT_SOURCE_DIR}/games/snake/libsnake.dylib
+        ${CMAKE_CURRENT_SOURCE_DIR}/games/tetris/libtetris.dylib
 )
 

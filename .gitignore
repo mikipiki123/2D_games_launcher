@@ -19,3 +19,13 @@ Makefile
 games/snake/.DS_Store
 
 games/snake/Testing/Temporary/
+
+games/tetris/Testing/Temporary/
+
+games/tetris/images/.DS_Store
+
+games/tetris/.DS_Store
+
+.DS_Store
+
+*.dylib
