@@ -13,11 +13,11 @@ include_directories(
         games/tetris/include
 )
 
-add_executable(gameMenu library.cpp
-        buttonHandler.cpp
-        buttonHandler.h
-        CsvHandler.cpp
-        CsvHandler.h
+add_executable(gameMenu src/library.cpp
+        src/buttonHandler.cpp
+        src/buttonHandler.h
+        src/CsvHandler.cpp
+        src/CsvHandler.h
 )
 
 link_directories(
