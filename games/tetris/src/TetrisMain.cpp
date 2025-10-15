@@ -1,7 +1,6 @@
 #include <iostream>
-#include "WindowManager.h"
+#include "../../../include/WindowManager.h"
 #include "gameLogic.h"
-#include "SnakeMain.h"
 #include "../include/TetrisMain.h"
 
 using namespace std;

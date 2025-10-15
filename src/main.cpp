@@ -1,10 +1,8 @@
 
-#include "WindowManager.h"
-#include "buttonHandler.h"
-#include "CsvHandler.h"
-
+#include "../include/WindowManager.h"
+#include "../include/buttonHandler.h"
+#include "../include/CsvHandler.h"
 #include <iostream>
-
 #include "TetrisMain.h"
 
 int main() {

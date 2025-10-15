@@ -2,11 +2,11 @@
 // Created by Michael Berner on 08/10/2025.
 //
 
-#include "WindowManager.h"
-#include "SnakeMain.h"
 
 #ifndef GAMEMENU_MOUSEHANDLER_H
 #define GAMEMENU_MOUSEHANDLER_H
+
+#include "WindowManager.h"
 
 class ButtonHandler {
 

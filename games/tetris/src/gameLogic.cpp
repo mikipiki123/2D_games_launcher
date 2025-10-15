@@ -5,6 +5,8 @@
 #include "gameLogic.h"
 #include <random>
 
+Shapes* firstGenShape(WindowManager* windowManager, ScreenCalc* screenCalc);
+
 GameLogic::GameLogic(WindowManager *window) {
     this-> windowManager = window;
 
@@ -28,7 +30,7 @@ GameLogic::GameLogic(WindowManager *window) {
     screenCalc.center[1] =  (float) this->windowManager->screen_height / 2;
 
 
-    currentShape = new ShapeZ(this->windowManager, &this->screenCalc, 2);
+    this->currentShape = firstGenShape(this->windowManager, &this->screenCalc);
 
 }
 
@@ -264,14 +266,19 @@ void GameLogic::checkAndRotate() {
 
 bool GameLogic::checkAndGenShape() {
 
+
+    std::cout << "stage 1" << std::endl;
+
     if (this->currentShape->isLanded && this->currentShape->shapeMatrixCoords[1] <= 1) { //end row
         std::cout << "shape y: " << currentShape->shapeMatrixCoords[1] << std::endl;
         return false;
     }
 
-    destroyRows( GAME_DIM_HEIGHT - 2 , 1);
+    std::cout << "stage 2" << std::endl;
 
     if (currentShape->isLanded) {
+
+        std::cout << "stage 3 " <<  std::endl;
         static std::random_device rd;
         static std::mt19937 gen(rd());
         static std::uniform_int_distribution<int> shapesRange(0, 6); // 7 types
@@ -281,6 +288,8 @@ bool GameLogic::checkAndGenShape() {
         std::cout << "shape: " << shape << std::endl;
         int color = randomColor(gen);
         std::cout << "color: " << color << std::endl;
+
+        std::cout << "stage 3" << std::endl;
 
         switch (shape) {
             case 0:
@@ -307,6 +316,7 @@ bool GameLogic::checkAndGenShape() {
             default:
                 std::cerr << "shape error" << std::endl;
         }
+        destroyRows( GAME_DIM_HEIGHT - 2 , 1);
     }
     return true;
 }
@@ -317,7 +327,6 @@ void GameLogic::destroyRows(int buttomLimit, int upperLimit) {
         return;
     }
 
-    if (this->currentShape->isLanded) {
         for (int i = buttomLimit; i > upperLimit; i--) {
             bool emptyRow = true;
 
@@ -362,10 +371,57 @@ void GameLogic::destroyRows(int buttomLimit, int upperLimit) {
                 destroyRows(GAME_DIM_HEIGHT - 2, i - 1);
             }
         }
-    }
 }
 
 GameLogic::~GameLogic() {
     delete this->currentShape;
 }
 
+Shapes* firstGenShape(WindowManager* windowManager, ScreenCalc* screenCalc) {
+    Shapes* currentShape;
+
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> shapesRange(0, 6); // 7 types
+    std::uniform_int_distribution<int> randomColor(1, 8); // 8 types
+    std::uniform_int_distribution<int> randomLocation(2, 8);
+
+    int shape = shapesRange(gen);
+    int color = randomColor(gen);
+    int location = randomLocation(gen);
+
+    switch (shape) {
+        case 0:
+            currentShape = new ShapeJ(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        case 1:
+            currentShape = new ShapeZ(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        case 2:
+            currentShape = new ShapeL(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        case 3:
+            currentShape = new ShapeS(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        case 4:
+            currentShape = new ShapeT(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        case 5:
+            currentShape = new ShapeI(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        case 6:
+            currentShape = new ShapeO(windowManager,screenCalc, color);
+            currentShape->shapeMatrixCoords[0] = location;
+            break;
+        default:
+            std::cerr << "shape error" << std::endl;
+    }
+    return currentShape;
+}
