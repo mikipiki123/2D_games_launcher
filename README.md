@@ -1,13 +1,14 @@
-# 2D Games platform
-A simple 2D games platform based on the SDL2 multimedia library.
+# 2D Games launcher
+A simple 2D games  based on the SDL2 multimedia library.
 It’s designed to easily append new games that are developed separately.
 The platform already includes button, CSV, and window handlers for managing games and storing their data.<br>
 
 ## Install instructions
-#### Build
+The following instructions are intended for macOS, but both the source code and dependencies are cross-platform and can also be installed on other operating systems.<br>
+### Build
 Building requires CMake and a package manager (such as Homebrew) to be installed.
 
-#### Dependencies 
+### Dependencies 
 Use Homebrew to install SDL2 and the following extensions:
 <pre>
   brew install sdl2 sdl2_image sdl2_ttf sdl2_mixer
