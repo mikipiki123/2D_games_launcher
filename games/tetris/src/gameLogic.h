@@ -56,7 +56,7 @@ class Shapes {
     virtual int getMatrixValue(int i, int j) = 0;
     virtual void changeMatrixValue(int i, int j, int value) = 0;
 
-    int shapeMatrixCoords[2] = {2,0}; // { x , y }
+    int shapeMatrixCoords[2] = {5,0}; // { x , y }
 
     bool isLanded = false;
 
@@ -184,8 +184,7 @@ class GameLogic {
     int savedMatrix[GAME_DIM_HEIGHT][GAME_DIM_WIDTH] = {false};
     int gameMatrix[GAME_DIM_HEIGHT][GAME_DIM_WIDTH] = {false}; //0 - empty, 0 > - colored block
 
-    std::vector<Shapes*> currentShape;
-    // Shapes* currentShape;
+    Shapes* currentShape;
 
     int score = 0;
     int speed = 500;
@@ -202,7 +201,7 @@ class GameLogic {
     void checkAndMove(int direction);
     void checkAndRotate();
 
-    bool checkAndGenShape();
+    bool checkAndGenShape(); //todo collapse and generate objects
 
     ~GameLogic();
 

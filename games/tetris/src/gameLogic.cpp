@@ -27,10 +27,8 @@ GameLogic::GameLogic(WindowManager *window) {
     screenCalc.center[0] = (float) this->windowManager->screen_width / 2; //{x,y}
     screenCalc.center[1] =  (float) this->windowManager->screen_height / 2;
 
-    // currentShape.push_back(new ShapeJ(this->windowManager, &this->screenCalc, 2));
-    currentShape.push_back(new ShapeZ(this->windowManager, &this->screenCalc, 5));
-    currentShape[0]->shapeMatrixCoords[0] = 5;
-    currentShape[0]->shapeMatrixCoords[1] = 14;
+
+    currentShape = new ShapeZ(this->windowManager, &this->screenCalc, 2);
 
 }
 
@@ -92,10 +90,9 @@ void GameLogic::drawGameObjects() {
     float x;
     float y;
 
-        x = this->screenCalc.center[0] -1 * (float)(GAME_DIM_WIDTH/2 - this->currentShape.back()->shapeMatrixCoords[0]) * screenCalc.sizeOfCell;
-        y = this->screenCalc.center[1] -1 * (float)(GAME_DIM_HEIGHT/2 - this->currentShape.back()->shapeMatrixCoords[1]) * screenCalc.sizeOfCell;
-        int color[3] = {255,255,255};
-        this->currentShape.back()->draw(x,y);
+        x = this->screenCalc.center[0] -1 * (float)(GAME_DIM_WIDTH/2 - this->currentShape->shapeMatrixCoords[0]) * screenCalc.sizeOfCell;
+        y = this->screenCalc.center[1] -1 * (float)(GAME_DIM_HEIGHT/2 - this->currentShape->shapeMatrixCoords[1]) * screenCalc.sizeOfCell;
+        this->currentShape->draw(x,y);
 
 }
 
@@ -107,11 +104,11 @@ void GameLogic::drawGame() {
 
 void GameLogic::updateMatrix() {
 
-    if (currentShape.back()->isLanded) { //save last position
-        for (int i = 0; i < currentShape.back()->getMatrixSize(); i++) {
-            for (int j = 0; j < currentShape.back()->getMatrixSize(); j++) {
-                if (currentShape.back()->getMatrixValue(i,j) && currentShape.back()->shapeMatrixCoords[1] + i < GAME_DIM_HEIGHT) {
-                    this->savedMatrix[currentShape.back()->shapeMatrixCoords[1] + i][currentShape.back()->shapeMatrixCoords[0] + j] = currentShape.back()->getMatrixValue(i,j);
+    if (currentShape->isLanded) { //save last position
+        for (int i = 0; i < currentShape->getMatrixSize(); i++) {
+            for (int j = 0; j < currentShape->getMatrixSize(); j++) {
+                if (currentShape->getMatrixValue(i,j) && currentShape->shapeMatrixCoords[1] + i < GAME_DIM_HEIGHT) {
+                    this->savedMatrix[currentShape->shapeMatrixCoords[1] + i][currentShape->shapeMatrixCoords[0] + j] = currentShape->getMatrixValue(i,j);
                 }
             }
         }
@@ -119,11 +116,11 @@ void GameLogic::updateMatrix() {
 
     createBorders();
 
-    if (!currentShape.back()->isLanded) {
-        for (int i = 0; i < currentShape.back()->getMatrixSize(); i++) {
-            for (int j = 0; j < currentShape.back()->getMatrixSize(); j++) {
-                if (currentShape.back()->getMatrixValue(i,j)) {
-                    this->gameMatrix[currentShape.back()->shapeMatrixCoords[1] + i][currentShape.back()->shapeMatrixCoords[0] + j] = currentShape.back()->getMatrixValue(i,j);
+    if (!currentShape->isLanded) {
+        for (int i = 0; i < currentShape->getMatrixSize(); i++) {
+            for (int j = 0; j < currentShape->getMatrixSize(); j++) {
+                if (currentShape->getMatrixValue(i,j)) {
+                    this->gameMatrix[currentShape->shapeMatrixCoords[1] + i][currentShape->shapeMatrixCoords[0] + j] = currentShape->getMatrixValue(i,j);
                 }
             }
         }
@@ -134,7 +131,7 @@ void GameLogic::updateMatrix() {
 
 void GameLogic::checkAndMove(int direction) {
 
-    int n = currentShape.back()->getMatrixSize();
+    int n = currentShape->getMatrixSize();
 
     bool canMove = true;
     const std::array<int,2> tmp = {0,0};
@@ -147,8 +144,8 @@ void GameLogic::checkAndMove(int direction) {
          */
         for (int i = 0 ; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                if (leftCorner[i] == tmp && this->currentShape.back()->getMatrixValue(i,j)) {
-                    leftCorner[i] = {currentShape.back()->shapeMatrixCoords[1] + i,currentShape.back()->shapeMatrixCoords[0] + j};
+                if (leftCorner[i] == tmp && this->currentShape->getMatrixValue(i,j)) {
+                    leftCorner[i] = {currentShape->shapeMatrixCoords[1] + i,currentShape->shapeMatrixCoords[0] + j};
                 }
             }
         }
@@ -158,7 +155,7 @@ void GameLogic::checkAndMove(int direction) {
             }
         }
         if (canMove) {
-            currentShape.back()->move(direction);
+            currentShape->move(direction);
         }
     } else if (direction == KEY_PRESS_SURFACE_RIGHT) {
         std::vector<std::array<int,2>> rightCorner(n); //{ i , j }
@@ -168,8 +165,8 @@ void GameLogic::checkAndMove(int direction) {
          */
         for (int i = n - 1 ; i >= 0; i--) {
             for (int j = n - 1; j >= 0; j--) {
-                if (rightCorner[i] == tmp && this->currentShape.back()->getMatrixValue(i,j)) {
-                    rightCorner[i] = {currentShape.back()->shapeMatrixCoords[1] + i,currentShape.back()->shapeMatrixCoords[0] + j};
+                if (rightCorner[i] == tmp && this->currentShape->getMatrixValue(i,j)) {
+                    rightCorner[i] = {currentShape->shapeMatrixCoords[1] + i,currentShape->shapeMatrixCoords[0] + j};
                 }
             }
         }
@@ -179,7 +176,7 @@ void GameLogic::checkAndMove(int direction) {
             }
         }
         if (canMove) {
-            currentShape.back()->move(direction);
+            currentShape->move(direction);
         }
 
     } else if (direction == KEY_PRESS_SURFACE_DOWN) {
@@ -190,8 +187,8 @@ void GameLogic::checkAndMove(int direction) {
          */
         for (int i = n - 1 ; i >= 0; i--) {
             for (int j = n - 1; j >= 0; j--) {
-                if (underCorner[j] == tmp && this->currentShape.back()->getMatrixValue(i,j)) {
-                    underCorner[j] = {currentShape.back()->shapeMatrixCoords[1] + i,currentShape.back()->shapeMatrixCoords[0] + j};
+                if (underCorner[j] == tmp && this->currentShape->getMatrixValue(i,j)) {
+                    underCorner[j] = {currentShape->shapeMatrixCoords[1] + i,currentShape->shapeMatrixCoords[0] + j};
                 }
             }
         }
@@ -201,9 +198,9 @@ void GameLogic::checkAndMove(int direction) {
             }
         }
         if (canMove) {
-            this->currentShape.back()->move(direction);
+            this->currentShape->move(direction);
         } else {
-            this->currentShape.back()->isLanded = true;
+            this->currentShape->isLanded = true;
             Mix_PlayChannel(-1, windowManager->soundEffect, 0);
             std::cout << "Shape landed" << std::endl;
         }
@@ -211,7 +208,7 @@ void GameLogic::checkAndMove(int direction) {
 }
 
 void GameLogic::checkAndRotate() {
-    int n = currentShape.back()->getMatrixSize();
+    int n = currentShape->getMatrixSize();
 
     bool canRotate = true;
 
@@ -219,7 +216,7 @@ void GameLogic::checkAndRotate() {
 
     for (int i = 0 ; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            tempMatrix[i][j] = currentShape.back()->getMatrixValue(i,j);
+            tempMatrix[i][j] = currentShape->getMatrixValue(i,j);
         }
     }
 
@@ -254,27 +251,27 @@ void GameLogic::checkAndRotate() {
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (tempMatrix[i][j] && this->gameMatrix[this->currentShape.back()->shapeMatrixCoords[1] + i][this->currentShape.back()->shapeMatrixCoords[0] + j] && !currentShape.back()->getMatrixValue(i,j)) {
+            if (tempMatrix[i][j] && this->gameMatrix[this->currentShape->shapeMatrixCoords[1] + i][this->currentShape->shapeMatrixCoords[0] + j] && !currentShape->getMatrixValue(i,j)) {
                 canRotate = false;
             }
         }
     }
 
     if (canRotate) {
-        currentShape.back()->rotate();
+        currentShape->rotate();
     }
 }
 
 bool GameLogic::checkAndGenShape() {
 
-    if (this->currentShape.back()->isLanded && this->currentShape.back()->shapeMatrixCoords[1] <= 1) { //end row
-        std::cout << "shape y: " << currentShape.back()->shapeMatrixCoords[1] << std::endl;
+    if (this->currentShape->isLanded && this->currentShape->shapeMatrixCoords[1] <= 1) { //end row
+        std::cout << "shape y: " << currentShape->shapeMatrixCoords[1] << std::endl;
         return false;
     }
 
     destroyRows( GAME_DIM_HEIGHT - 2 , 1);
 
-    if (currentShape.back()->isLanded) {
+    if (currentShape->isLanded) {
         static std::random_device rd;
         static std::mt19937 gen(rd());
         static std::uniform_int_distribution<int> shapesRange(0, 6); // 7 types
@@ -287,25 +284,25 @@ bool GameLogic::checkAndGenShape() {
 
         switch (shape) {
             case 0:
-                this->currentShape.push_back(new ShapeJ(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeJ(this->windowManager,&this->screenCalc, color);
                 break;
             case 1:
-                this->currentShape.push_back(new ShapeZ(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeZ(this->windowManager,&this->screenCalc, color);
                 break;
             case 2:
-                this->currentShape.push_back(new ShapeL(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeL(this->windowManager,&this->screenCalc, color);
                 break;
             case 3:
-                this->currentShape.push_back(new ShapeS(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeS(this->windowManager,&this->screenCalc, color);
                 break;
             case 4:
-                this->currentShape.push_back(new ShapeT(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeT(this->windowManager,&this->screenCalc, color);
                 break;
             case 5:
-                this->currentShape.push_back(new ShapeI(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeI(this->windowManager,&this->screenCalc, color);
                 break;
             case 6:
-                this->currentShape.push_back(new ShapeO(this->windowManager,&this->screenCalc, color));
+                this->currentShape = new ShapeO(this->windowManager,&this->screenCalc, color);
                 break;
             default:
                 std::cerr << "shape error" << std::endl;
@@ -320,7 +317,7 @@ void GameLogic::destroyRows(int buttomLimit, int upperLimit) {
         return;
     }
 
-    if (this->currentShape.back()->isLanded) {
+    if (this->currentShape->isLanded) {
         for (int i = buttomLimit; i > upperLimit; i--) {
             bool emptyRow = true;
 
@@ -367,3 +364,8 @@ void GameLogic::destroyRows(int buttomLimit, int upperLimit) {
         }
     }
 }
+
+GameLogic::~GameLogic() {
+    delete this->currentShape;
+}
+
