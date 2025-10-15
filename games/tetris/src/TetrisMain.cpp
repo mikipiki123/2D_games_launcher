@@ -35,6 +35,11 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
         exit(1);
     }
 
+    if (!windowManager->loadAudio("games/tetris/sounds/landed.wav")) {
+        std::cout << "Failed to load audio." << std::endl;
+        exit(1);
+    }
+
 
     GameLogic gameLogic(windowManager);
 
@@ -57,10 +62,12 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
         //Handle events on queue
         while( SDL_PollEvent( &e ) != 0 ) {
             //User requests quit
-            // if( e.type == SDL_QUIT )
-            // {
-            //     return 0;
-            // }
+            if( e.type == SDL_QUIT )
+            {
+                bestUser->score = "-1";
+                bestUser->name = ".";
+                return *bestUser;
+            }
 
             //User presses a key
             if( e.type == SDL_KEYDOWN ) {
@@ -100,7 +107,7 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
                 }
                 //render game --
                 gameLogic.updateMatrix();
-                PRINT_MATRIX()
+                // PRINT_MATRIX()
                 if (!gameLogic.checkAndGenShape()) {
                     quit = true;
                 }
@@ -114,7 +121,7 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
             std::cout << "TIME! 1" << std::endl;
             gameLogic.checkAndMove(KEY_PRESS_SURFACE_DOWN);
             gameLogic.updateMatrix();
-            PRINT_MATRIX()
+            // PRINT_MATRIX()
             if (!gameLogic.checkAndGenShape()) {
                 quit = true;
             }
@@ -132,7 +139,7 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
 
         //draw Background
         if (windowManager->backGround == NULL) {
-            std::cout << "Failed to load media. - grass.jpg" << std::endl;
+            std::cout << "Failed to load media. - background" << std::endl;
             SDL_SetRenderDrawColor(windowManager->renderer, 0, 0, 0, 255);
         } else {
             SDL_RenderCopy(windowManager->renderer, windowManager->backGround, nullptr, nullptr);

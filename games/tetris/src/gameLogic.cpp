@@ -205,6 +205,7 @@ void GameLogic::checkAndMove(int direction) {
             this->currentShape.back()->move(direction);
         } else {
             this->currentShape.back()->isLanded = true;
+            Mix_PlayChannel(-1, windowManager->soundEffect, 0);
             std::cout << "Shape landed" << std::endl;
         }
     }
@@ -307,6 +308,8 @@ bool GameLogic::checkAndGenShape() {
             case 6:
                 this->currentShape.push_back(new ShapeO(this->windowManager,&this->screenCalc, color));
                 break;
+            default:
+                std::cerr << "shape error" << std::endl;
         }
     }
     return true;
@@ -358,7 +361,7 @@ void GameLogic::destroyRows(int buttomLimit, int upperLimit) {
                 }
                 this->score++;
                 if (this->score < 10) {
-                    this->speed -= 300;
+                    this->speed -= 40;
                 }
                 destroyRows(GAME_DIM_HEIGHT - 2, i - 1);
             }
