@@ -11,7 +11,7 @@ int main() {
 
     WindowManager* windowManager = new WindowManager(1080, 720);
 
-    csvInit("testCSV.csv");
+    csvInit("records.csv");
 
 
     if (!windowManager->init()) {

@@ -49,7 +49,7 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
     //Event handler
     SDL_Event e;
 
-    int highestScore = 2;
+    int highestScore = stoi(bestUser->score);
     bool gameOver = false;
 
     std::array<std::string,4> text = {"Score:", std::to_string(gameLogic.score), "Best score: " , bestUser->name + ": " + std::to_string(highestScore)};
@@ -181,14 +181,14 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
 
         SDL_StartTextInput(); // enable text input events
 
-        if (!windowManager->loadMedia("images/winImage.jpg")) {
+        if (!windowManager->loadMedia("games/tetris/images/arcadeWin.jpg")) {
             std::cout << "Failed to load game_over." << std::endl;
             exit(1);
         }
 
         SDL_Delay(200);
 
-        if (!windowManager->loadAudio("sounds/WIN.wav")) {
+        if (!windowManager->loadAudio("games/tetris/sounds/COCWin.wav")) {
             std::cout << "Failed to load audio." << std::endl;
             exit(1);
         }
@@ -253,13 +253,13 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
 
     } else {
 
-        if (!windowManager->loadMedia("images/game_over.jpg")) {
+        if (!windowManager->loadMedia("games/tetris/images/arcadeLose.jpg")) {
             std::cerr << "Failed to load game_over." << std::endl;
             exit(1);
         }
 
 
-        if (!windowManager->loadAudio("sounds/LOSE.wav")) {
+        if (!windowManager->loadAudio("games/tetris/sounds/LOSE.wav")) {
             std::cerr << "Failed to load audio." << std::endl;
             exit(1);
         }

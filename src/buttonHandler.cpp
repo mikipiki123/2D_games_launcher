@@ -63,7 +63,7 @@ void ButtonHandler::buttonRender() {
 }
 
 void ButtonHandler::buttonStatus(SDL_Event* e, UserData (*GameFunction)(WindowManager*, UserData*)) {
-    std::vector<UserData> bestUsers = csvRead("testCSV.csv"); //todo no need for game name
+    std::vector<UserData> bestUsers = csvRead("records.csv"); //todo no need for game name
     UserData bestUser;
 
     std::string buttonGame = this->buttonText;
@@ -100,7 +100,7 @@ void ButtonHandler::buttonStatus(SDL_Event* e, UserData (*GameFunction)(WindowMa
                         bestUsers[i] = bestUser;
                     }
                 }
-                csvWrite("testCSV.csv", bestUsers);
+                csvWrite("records.csv", bestUsers);
             }
 
             std::cout << "game ended.." << std::endl;

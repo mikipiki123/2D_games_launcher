@@ -35,7 +35,7 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
         windowManager = window;
     }
 
-    if (!windowManager->loadMedia("images/grass.jpg")) {
+    if (!windowManager->loadMedia("games/snake/images/grass.jpg")) {
         std::cerr << "Error loading grass image" << std::endl;
         exit(1);
     }
@@ -70,7 +70,7 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
 
     int speed = 800;
 
-    if (!windowManager->loadAudio("sounds/ApplePay.wav")) {
+    if (!windowManager->loadAudio("games/snake/sounds/ApplePay.wav")) {
         std::cout << "Failed to load audio." << std::endl;
         exit(1);
     }
@@ -82,7 +82,9 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
             //User requests quit
             if( e.type == SDL_QUIT )
             {
-                quit = true;
+                bestUser->score = "-1";
+                bestUser->name = ".";
+                return *bestUser;
             }
 
             //User presses a key
@@ -188,14 +190,14 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
 
         SDL_StartTextInput(); // enable text input events
 
-        if (!windowManager->loadMedia("images/winImage.jpg")) {
+        if (!windowManager->loadMedia("games/snake/images/winImage.jpg")) {
             std::cout << "Failed to load game_over." << std::endl;
             exit(1);
         }
 
         SDL_Delay(200);
 
-        if (!windowManager->loadAudio("sounds/WIN.wav")) {
+        if (!windowManager->loadAudio("games/snake/sounds/WIN.wav")) {
             std::cout << "Failed to load audio." << std::endl;
             exit(1);
         }
@@ -260,14 +262,14 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
 
     } else {
 
-        if (!windowManager->loadMedia("images/game_over.jpg")) {
+        if (!windowManager->loadMedia("games/snake/images/game_over.jpg")) {
             std::cerr << "Failed to load game_over." << std::endl;
             exit(1);
         }
 
         SDL_Delay(200);
 
-        if (!windowManager->loadAudio("sounds/LOSE.wav")) {
+        if (!windowManager->loadAudio("games/snake/sounds/LOSE.wav")) {
             std::cerr << "Failed to load audio." << std::endl;
             exit(1);
         }

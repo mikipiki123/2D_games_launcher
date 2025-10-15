@@ -3,7 +3,6 @@
 //
 
 #include "gameLogic.h"
-#include <memory>
 #include <random>
 
 GameLogic::GameLogic(WindowManager *window) {
