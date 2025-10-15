@@ -107,7 +107,7 @@ void GameLogic::drawGame() {
 
 void GameLogic::updateMatrix() {
 
-    if (currentShape.back()->isLanded) { //save last position
+    if (currentShape[0]->isLanded) { //save last position
         for (int i = 0; i < currentShape.back()->getMatrixSize(); i++) {
             for (int j = 0; j < currentShape.back()->getMatrixSize(); j++) {
                 if (currentShape.back()->getMatrixValue(i,j) && currentShape.back()->shapeMatrixCoords[1] + i < GAME_DIM_HEIGHT) {
