@@ -1,7 +1,7 @@
 
 
 #include "GameLogic.h"
-#include "../include//WindowManager.h"
+#include "../../../include//WindowManager.h"
 #include "../include/SnakeMain.h"
 
 

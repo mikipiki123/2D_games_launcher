@@ -16,9 +16,7 @@ include_directories(
 add_executable(gameMenu
         src/main.cpp
         src/buttonHandler.cpp
-        src/buttonHandler.h
         src/CsvHandler.cpp
-        src/CsvHandler.h
 )
 
 link_directories(

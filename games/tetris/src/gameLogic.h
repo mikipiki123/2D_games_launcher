@@ -6,7 +6,7 @@
 #ifndef TETRIS_GAMELOGIC_H
 #define TETRIS_GAMELOGIC_H
 
-#include "WindowManager.h"
+#include "../../../include/WindowManager.h"
 
 #define GAME_DIM_WIDTH 12 //including borders
 #define GAME_DIM_HEIGHT 22
@@ -184,7 +184,7 @@ class GameLogic {
     int savedMatrix[GAME_DIM_HEIGHT][GAME_DIM_WIDTH] = {false};
     int gameMatrix[GAME_DIM_HEIGHT][GAME_DIM_WIDTH] = {false}; //0 - empty, 0 > - colored block
 
-    Shapes* currentShape;
+    Shapes* currentShape = nullptr;
 
     int score = 0;
     int speed = 500;

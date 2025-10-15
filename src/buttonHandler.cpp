@@ -2,9 +2,9 @@
 // Created by Michael Berner on 08/10/2025.
 //
 
-#include "buttonHandler.h"
+#include "../include/buttonHandler.h"
 
-#include "CsvHandler.h"
+#include "../include/CsvHandler.h"
 
 ButtonHandler::ButtonHandler(WindowManager *window, SDL_Rect rect, SDL_Color normalColor, SDL_Color hoverColor ,SDL_Color clickedColor) {
     this->windowManager = window;

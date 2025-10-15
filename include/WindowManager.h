@@ -16,6 +16,12 @@
 // const int SCREEN_WIDTH = 640;
 // const int SCREEN_HEIGHT = 480;
 
+typedef struct {
+    std::string game;
+    std::string name;
+    std::string score;
+}UserData;
+
 
 class WindowManager {
     public:

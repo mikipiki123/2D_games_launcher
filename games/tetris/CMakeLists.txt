@@ -8,7 +8,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-include_directories(../snake/include)
+include_directories(../../include)
 
 #add_executable(tetris src/main.cpp
 #        src/gameLogic.cpp
@@ -21,7 +21,7 @@ add_library(tetris SHARED
         src/shapes.cpp
 )
 
-link_directories(../snake)
+link_directories(../..)
 
 
 target_link_libraries(tetris PRIVATE

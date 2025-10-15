@@ -10,7 +10,7 @@ find_package(SDL2_mixer REQUIRED)
 
 add_library(snake SHARED
         src/SnakeMain.cpp
-        src/WindowManager.cpp
+        ../../src/WindowManager.cpp
         src/Snake.cpp
         src/GameLogic.cpp)
 
