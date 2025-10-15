@@ -29,7 +29,7 @@ Then build from the project directory:
 </pre>
 
 ## Adding new games
-You can look at the structures of existing games and append new ones, the basic rules:<br>
+You can look at the structures of the existing games and append new ones, the basic rules:<br>
 1. Each game must be compiled as a shared library.
 2. Each game receives pointers to WindowManager* and UserData*, and returns a UserData object.
 3. If a game exits illegally, the score will be set to -1 and will not be stored in records.csv.
