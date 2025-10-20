@@ -56,6 +56,23 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
     // Record start time
     auto start = std::chrono::high_resolution_clock::now();
 
+    int tmpScore = 0;
+
+    //text generate
+    for (int i = 0; i < text.size(); i++) {
+        if (!windowManager->loadFont(text[i], i)) {
+            std::cout << "Failed to load Font." << std::endl;
+            exit(1);
+        }
+
+        SDL_Rect textScore = {10, 5 + i * 20, 0, 0};
+
+        SDL_QueryTexture(windowManager->text[i], nullptr, nullptr, &textScore.w, &textScore.h);
+
+        SDL_RenderCopy(windowManager->renderer, windowManager->text[i], nullptr, &textScore);
+
+    }
+
      //While application is running
     while( !quit ) {
         //Handle events on queue
@@ -149,14 +166,17 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
         gameLogic.drawGame();
 
         //text
-        text[1] = std::to_string(gameLogic.score);
-        for (int i = 0; i < text.size(); i++) {
-            if (!windowManager->loadFont(text[i], i)) {
+        if (gameLogic.score > tmpScore) {
+            tmpScore = gameLogic.score;
+            text[1] = std::to_string(gameLogic.score);
+
+            SDL_DestroyTexture(windowManager->text[1]);
+            if (!windowManager->loadFont(text[1], 1)) {
                 std::cout << "Failed to load Font." << std::endl;
                 exit(1);
             }
-
-
+        }
+        for (int i = 0; i < text.size(); i++) {
             SDL_Rect textScore = {10, 5 + i * 20, 0, 0};
 
             SDL_QueryTexture(windowManager->text[i], nullptr, nullptr, &textScore.w, &textScore.h);
@@ -232,6 +252,8 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
             SDL_DestroyTexture(texture);
 
             for (int i = 0; i < text.size(); i++) {
+
+                SDL_DestroyTexture(windowManager->text[i]);
                 if (!windowManager->loadFont(text[i], i)) {
                     std::cout << "Failed to load Font." << std::endl;
                     exit(1);
@@ -279,6 +301,8 @@ UserData tetrisPlay(WindowManager* window, UserData* bestUser) {
             SDL_RenderCopy(windowManager->renderer, windowManager->backGround, nullptr, nullptr);
 
             for (int i = 0; i < text.size(); i++) {
+
+                SDL_DestroyTexture(windowManager->text[i]);
                 if (!windowManager->loadFont(text[i], i)) {
                     std::cout << "Failed to load Font." << std::endl;
                     exit(1);

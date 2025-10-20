@@ -187,7 +187,7 @@ class GameLogic {
     Shapes* currentShape = nullptr;
 
     int score = 0;
-    int speed = 500;
+    int speed = 500; //ms
 
     void updateMatrix();
 

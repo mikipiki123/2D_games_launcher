@@ -8,9 +8,9 @@
 
 #include "WindowManager.h"
 
+inline std::array<std::string,10> buttonNames;
+
 class ButtonHandler {
-
-
 
     public:
 
@@ -24,8 +24,9 @@ class ButtonHandler {
     bool isPressed = false;
 
     std::string buttonText;
+    int buttonIndex;
 
-    ButtonHandler(WindowManager* window, SDL_Rect rect, SDL_Color normalColor, SDL_Color hoverColor, SDL_Color clickedColor);
+    ButtonHandler(std::string text, int buttonIndex, WindowManager* window, SDL_Rect rect, SDL_Color normalColor, SDL_Color hoverColor, SDL_Color clickedColor);
 
     bool isInside();
 

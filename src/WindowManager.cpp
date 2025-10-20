@@ -39,7 +39,7 @@ bool WindowManager::init() {
         else
         {
             ///Create renderer for window
-            renderer = SDL_CreateRenderer( this->Window, -1, SDL_RENDERER_ACCELERATED );
+            renderer = SDL_CreateRenderer( this->Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             if( renderer == NULL )
             {
                 printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );

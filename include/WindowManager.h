@@ -7,6 +7,8 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <SDL_mixer.h>
+#include <vector>
+#include <array>
 
 
 #ifndef SNAKE_WINDOWMANAGER_H

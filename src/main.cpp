@@ -5,6 +5,12 @@
 #include <iostream>
 #include "TetrisMain.h"
 
+enum {
+    QUIT,
+    SNAKE,
+    TETRIS
+};
+
 int main() {
 
     WindowManager* windowManager = new WindowManager(1080, 720);
@@ -18,7 +24,7 @@ int main() {
     }
 
     if (!windowManager->loadMedia("images/pixel_image.jpg")) {
-        std::cout << "Error loading pixel imagessss" << std::endl;
+        std::cout << "Error loading pixel images" << std::endl;
         return -1;
     }
 
@@ -26,14 +32,11 @@ int main() {
 
     SDL_Event e;
 
-    ButtonHandler* snakeButton = new ButtonHandler(windowManager, {(int)windowManager->screen_width / 2, (int)windowManager->screen_height/2, 200, 60}, {100, 100, 100} ,{170, 170, 255}, {100, 100, 255});
-    snakeButton->buttonText = "Snake";
+    ButtonHandler* snakeButton = new ButtonHandler("Snake", SNAKE, windowManager, {(int)windowManager->screen_width / 2, (int)windowManager->screen_height/2, 200, 60}, {100, 100, 100} ,{170, 170, 255}, {100, 100, 255});
 
-    ButtonHandler* quitButton = new ButtonHandler(windowManager, {38, 28, 60, 40}, {100, 100, 100} , {60, 60, 60},{30, 30, 30});
-    quitButton->buttonText = "Quit";
+    ButtonHandler* quitButton = new ButtonHandler("Quit",QUIT, windowManager, {38, 28, 60, 40}, {100, 100, 100} , {60, 60, 60},{30, 30, 30});
 
-    ButtonHandler* tetrisButton = new ButtonHandler(windowManager, {(int)windowManager->screen_width / 2, (int)windowManager->screen_height/2 + 80, 200, 60}, {100, 100, 100} ,{170, 170, 255}, {100, 100, 255});
-    tetrisButton->buttonText = "Tetris";
+    ButtonHandler* tetrisButton = new ButtonHandler("Tetris",TETRIS,windowManager, {(int)windowManager->screen_width / 2, (int)windowManager->screen_height/2 + 80, 200, 60}, {100, 100, 100} ,{170, 170, 255}, {100, 100, 255});
 
     windowManager->music = Mix_LoadMUS("sounds/Wii Music - Gaming Background Music (HD).mp3");
 

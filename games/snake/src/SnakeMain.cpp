@@ -75,6 +75,21 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
         exit(1);
     }
 
+    int tmpScore = 0;
+    //text generate
+    for (int i = 0; i < text.size(); i++) {
+        if (!windowManager->loadFont(text[i], i)) {
+            std::cout << "Failed to load Font." << std::endl;
+            exit(1);
+        }
+        SDL_Rect textScore = {10, 5 + i * 20, 0, 0};
+
+        SDL_QueryTexture(windowManager->text[i], nullptr, nullptr, &textScore.w, &textScore.h);
+
+        SDL_RenderCopy(windowManager->renderer, windowManager->text[i], nullptr, &textScore);
+    }
+
+
     //While application is running
     while( !quit ) {
         //Handle events on queue
@@ -160,13 +175,17 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
         gameLogic.drawGame();
 
         //text
-        for (int i = 0; i < text.size(); i++) {
-            if (!windowManager->loadFont(text[i], i)) {
+        if (score > tmpScore) {
+            tmpScore = score;
+            text[1] = std::to_string(score);
+
+            SDL_DestroyTexture(windowManager->text[1]);
+            if (!windowManager->loadFont(text[1], 1)) {
                 std::cout << "Failed to load Font." << std::endl;
                 exit(1);
             }
-
-            int tw,th;
+        }
+        for (int i = 0; i < text.size(); i++) {
             SDL_Rect textScore = {10, 5 + i * 20, 0, 0};
 
             SDL_QueryTexture(windowManager->text[i], nullptr, nullptr, &textScore.w, &textScore.h);
@@ -242,6 +261,8 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
             SDL_DestroyTexture(texture);
 
             for (int i = 0; i < text.size(); i++) {
+
+                SDL_DestroyTexture(windowManager->text[i]);
                 if (!windowManager->loadFont(text[i], i)) {
                     std::cout << "Failed to load Font." << std::endl;
                     exit(1);
@@ -290,6 +311,8 @@ UserData snakePlay(WindowManager* window, UserData* bestUser) {
             SDL_RenderCopy(windowManager->renderer, windowManager->backGround, nullptr, nullptr);
 
             for (int i = 0; i < text.size(); i++) {
+
+                SDL_DestroyTexture(windowManager->text[i]);
                 if (!windowManager->loadFont(text[i], i)) {
                     std::cout << "Failed to load Font." << std::endl;
                     exit(1);

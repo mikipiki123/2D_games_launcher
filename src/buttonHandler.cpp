@@ -2,11 +2,13 @@
 // Created by Michael Berner on 08/10/2025.
 //
 
+#include <utility>
+
 #include "../include/buttonHandler.h"
 
 #include "../include/CsvHandler.h"
 
-ButtonHandler::ButtonHandler(WindowManager *window, SDL_Rect rect, SDL_Color normalColor, SDL_Color hoverColor ,SDL_Color clickedColor) {
+ButtonHandler::ButtonHandler(std::string text, int buttonIndex ,WindowManager *window, SDL_Rect rect, SDL_Color normalColor, SDL_Color hoverColor ,SDL_Color clickedColor) {
     this->windowManager = window;
 
     this->rect = rect; //centralize
@@ -16,6 +18,17 @@ ButtonHandler::ButtonHandler(WindowManager *window, SDL_Rect rect, SDL_Color nor
     this->normalColor = normalColor;
     this->hoverColor = hoverColor;
     this->clickedColor = clickedColor;
+
+    // Render button text
+    this->buttonIndex = buttonIndex;
+    this->buttonText = std::move(text);
+    if (!windowManager->loadFont(this->buttonText, this->buttonIndex)) { // 0 for first texture
+        std::cout << "Failed to load Font." << std::endl;
+        exit(1);
+    }
+
+    buttonNames[this->buttonIndex] = this->buttonText;
+
 }
 
 
@@ -28,7 +41,7 @@ bool ButtonHandler::isInside() {
 void ButtonHandler::buttonRender() {
     double scale = 1.0;
 
-    // Set color based on state shnoozel
+    // Set color based on state
     SDL_Color color;
     if (this->isPressed) {
         color = this->clickedColor;
@@ -49,17 +62,12 @@ void ButtonHandler::buttonRender() {
     SDL_SetRenderDrawColor(this->windowManager->renderer, 0, 0, 0, 255);
     SDL_RenderDrawRect(this->windowManager->renderer, &rect);
 
-    // Render button text
-    if (!windowManager->loadFont(this->buttonText, 0)) { // 0 for first texture
-        std::cout << "Failed to load Font." << std::endl;
-        exit(1);
-    }
 
     int tw, th;
-    SDL_QueryTexture(windowManager->text[0], nullptr, nullptr, &tw, &th);
+    SDL_QueryTexture(windowManager->text[this->buttonIndex], nullptr, nullptr, &tw, &th);
     SDL_Rect textRect = {this->rect.x + (this->rect.w - (int)(tw*scale)) / 2,
                          this->rect.y + (this->rect.h - (int)(th*scale)) / 2, (int)(tw*scale), (int)(th*scale)};
-    SDL_RenderCopy(windowManager->renderer, windowManager->text[0], nullptr, &textRect);
+    SDL_RenderCopy(windowManager->renderer, windowManager->text[this->buttonIndex], nullptr, &textRect);
 }
 
 void ButtonHandler::buttonStatus(SDL_Event* e, UserData (*GameFunction)(WindowManager*, UserData*)) {
@@ -105,6 +113,16 @@ void ButtonHandler::buttonStatus(SDL_Event* e, UserData (*GameFunction)(WindowMa
 
             std::cout << "game ended.." << std::endl;
             windowManager->loadMedia("images/pixel_image.jpg");
+            for (int i = 0; i < buttonNames.size(); i++) {
+                if (buttonNames[i].empty()) {
+                    break;
+                }
+                if (!windowManager->loadFont(buttonNames[i], i)) { // 0 for first texture
+                    std::cout << "Failed to load Font after game" << std::endl;
+                    exit(1);
+                }
+            }
+
         }
     }
 }
